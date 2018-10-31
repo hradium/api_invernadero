@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 import mysql.connector
 from usuario import Usuario
 conexion = mysql.connector.connect(user="carlos",password="12345",database="invernadero")
@@ -7,17 +7,22 @@ cursor = conexion.cursor()
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/home/")
 def hello():
-    return "Hello World!"
+	respuesta=make_response("Hello World!")
+	respuesta.headers.add('Access-Control-Allow-Origin','*')
+	return respuesta
+	
 #http://127.0.0.1:5000/login/?usuario=carlos&password=12345
 @app.route("/login/", methods=['GET'])
 def login():
 	#print(request.args)
 	usuario=request.args.get('usuario')
 	password=request.args.get('password')
+	
 	userDB = Usuario(conexion,cursor)
 	print(userDB.login(usuario, password))
+	
 	print(usuario, password)
 	return usuario + " " + password
 	
