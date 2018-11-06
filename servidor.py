@@ -21,9 +21,12 @@ def login():
 	password=request.args.get('password')
 	
 	userDB = Usuario(conexion,cursor)
-	print(userDB.login(usuario, password))
+	respuesta=make_response(str(userDB.login(usuario,password)))
+	respuesta.headers.add('Access-Control-Allow-Origin','*')
+	return respuesta
+	#print(userDB.login(usuario, password))
 	
-	print(usuario, password)
-	return usuario + " " + password
+	#print(usuario, password)
+	#return usuario + " " + password
 	
 app.run(debug=True)
