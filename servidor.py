@@ -1,6 +1,7 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 import mysql.connector
 from usuario import Usuario
+from invernadero import Invernadero
 conexion = mysql.connector.connect(user="carlos",password="12345",database="invernadero")
 
 cursor = conexion.cursor()
@@ -28,5 +29,13 @@ def login():
 	
 	#print(usuario, password)
 	#return usuario + " " + password
+@app.route("/invernadero/", methods=['GET'])
+def invernadero():
+	usuario = request.args.get('usuario')
+	print(usuario)
+	inv = Invernadero(conexion, cursor)
+	resultado = inv.buscar(usuario)
+	print(resultado)
 	
+	return jsonify(resultado)
 app.run(debug=True)

@@ -14,12 +14,13 @@ class Usuario:
 	
 	def login(self, usuario, contra):
 		select = ("SELECT * FROM usuario WHERE correo = %s AND password = %s")
+		
 		h = hashlib.new('sha256', bytes(contra, 'utf-8'))
 		h=h.hexdigest()
 		self.cursor.execute(select, (usuario, h))
 		
 		resultado = self.cursor.fetchall()
-		
+		print(resultado)
 		if resultado:
 			return True
 		else:
