@@ -2,6 +2,7 @@ from flask import Flask, request, make_response, jsonify
 import mysql.connector
 from usuario import Usuario
 from invernadero import Invernadero
+from planta import Planta
 conexion = mysql.connector.connect(user="carlos",password="12345",database="invernadero")
 
 cursor = conexion.cursor()
@@ -35,6 +36,16 @@ def invernadero():
 	print(usuario)
 	inv = Invernadero(conexion, cursor)
 	resultado = inv.buscar(usuario)
+	print(resultado)
+	
+	return jsonify(resultado)
+	
+@app.route("/planta/", methods=['GET'])
+def planta():
+	id_planta = request.args.get('id')
+	
+	p = Planta(conexion, cursor)
+	resultado = p.buscar(id_planta)
 	print(resultado)
 	
 	return jsonify(resultado)
